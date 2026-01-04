@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attrition Prediction | HR Analytics</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script defer src="/static/js/script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Employee Attrition Prediction</h1>
+            <div class="accuracy-badge">
+                <i class="fas fa-bolt"></i> Model Accuracy: {{ model_accuracy }}
+            </div>
+        </header>
+
+        <div class="glass-card" style="padding: 2.5rem;">
+            <form action="/predict" method="post" id="predictionForm">
+                <h3 style="margin-bottom: 2rem; color: var(--primary-dark); font-weight: 600;">
+                    <i class="fas fa-user-tie" style="margin-right: 0.5rem;"></i> Employee Details
+                </h3>
+                
+                <div class="form-group floating-label-group">
+                    <input type="text" class="form-control" id="EmployeeID" name="EmployeeID" placeholder=" " required>
+                    <label class="floating-label">Employee ID</label>
+                </div>
+                
+                <div class="form-group floating-label-group">
+                    <input type="text" class="form-control" id="Name" name="Name" placeholder=" " required>
+                    <label class="floating-label">Employee Name</label>
+                </div>
+
+                <div class="form-group floating-label-group">
+                    <input type="number" class="form-control" id="Age" name="Age" placeholder=" " required>
+                    <label class="floating-label">Age</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="BusinessTravel"><i class="fas fa-plane"></i> Business Travel</label>
+                    <select class="form-control" id="BusinessTravel" name="BusinessTravel" required>
+                        <option value="Travel_Rarely">Rarely</option>
+                        <option value="Travel_Frequently">Frequently</option>
+                        <option value="Non-Travel">No Travel</option>
+                    </select>
+                </div>
+
+                <div class="form-group floating-label-group">
+                    <input type="number" class="form-control" id="DailyRate" name="DailyRate" placeholder=" " required>
+                    <label class="floating-label">Daily Rate (USD)</label>
+                </div>
+
+                <div class="form-group floating-label-group">
+                    <input type="number" class="form-control" id="DistanceFromHome" name="DistanceFromHome" placeholder=" " required>
+                    <label class="floating-label">Distance From Home (km)</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="Education"><i class="fas fa-graduation-cap"></i> Education Level</label>
+                    <select class="form-control" id="Education" name="Education" required>
+                        <option value="1">BSc</option>
+                        <option value="2">BTech</option>
+                        <option value="3">MSc</option>
+                        <option value="4">PhD</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="Department"><i class="fas fa-building"></i> Department</label>
+                    <select class="form-control" id="Department" name="Department" required>
+                        <option value="Sales">Sales</option>
+                        <option value="Research & Development">R&D</option>
+                        <option value="HR">HR</option>
+                    </select>
+                </div>
+
+                <div class="form-group floating-label-group">
+                    <input type="number" class="form-control" id="YearsAtCompany" name="YearsAtCompany" placeholder=" " required>
+                    <label class="floating-label">Years at Company</label>
+                </div>
+
+                <div class="form-group floating-label-group">
+                    <input type="number" class="form-control" id="YearsSinceLastPromotion" name="YearsSinceLastPromotion" placeholder=" " required>
+                    <label class="floating-label">Years Since Last Promotion</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="WorkLifeBalance"><i class="fas fa-balance-scale"></i> Work-Life Balance</label>
+                    <select class="form-control" id="WorkLifeBalance" name="WorkLifeBalance" required>
+                        <option value="1">Bad</option>
+                        <option value="2">Good</option>
+                        <option value="3">Better</option>
+                        <option value="4">Best</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" id="predictBtn">
+                    <i class="fas fa-chart-line"></i> Predict Attrition Risk
+                </button>
+            </form>
+        </div>
+
+        {% if prediction_text %}
+        <div class="prediction-card">
+            <div class="prediction-text {% if 'Might Leave' in prediction_text %}leave{% else %}stay{% endif %}">
+                <i class="fas fa-{% if 'Might Leave' in prediction_text %}exclamation-triangle{% else %}check-circle{% endif %}"></i>
+                {{ prediction_text }}
+            </div>
+
+            <div class="suggestions-card">
+                <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                <ul class="suggestions-list">
+                    {% for suggestion in suggestions %}
+                    <li>
+                        <span class="suggestion-icon"><i class="fas fa-arrow-right"></i></span>
+                        <span>{{ suggestion }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="nav-links">
+            <a href="/view_previous_prediction" class="nav-link">
+                <i class="fas fa-history"></i> View Previous Predictions
+            </a>
+            <a href="/work_life_calculator" class="nav-link">
+                <i class="fas fa-heartbeat"></i> Work-Life Balance Calculator
+            </a>
+        </div>
+    </div>
+</body>
+</html>

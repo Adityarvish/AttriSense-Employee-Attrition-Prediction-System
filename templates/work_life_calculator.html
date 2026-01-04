@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work-Life Balance Calculator</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Work-Life Balance Calculator</h1>
+        </header>
+
+        <div class="card">
+            <form action="/calculate_wlb" method="post">
+                <div class="form-group">
+                    <label for="WorkHours">Work Hours per Week</label>
+                    <input type="number" class="form-control" id="WorkHours" name="WorkHours" placeholder="e.g., 45" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="CommuteTime">Commute Time per Day (minutes)</label>
+                    <input type="number" class="form-control" id="CommuteTime" name="CommuteTime" placeholder="e.g., 30" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Holidays">Holidays per Year</label>
+                    <input type="number" class="form-control" id="Holidays" name="Holidays" placeholder="e.g., 20" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="LeisureHours">Leisure Hours per Day</label>
+                    <input type="number" class="form-control" id="LeisureHours" name="LeisureHours" placeholder="e.g., 2" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="Dependents">Number of Dependents</label>
+                    <input type="number" class="form-control" id="Dependents" name="Dependents" placeholder="e.g., 2" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Calculate Balance</button>
+            </form>
+
+            {% if work_life_rating %}
+            <div class="wlb-rating wlb-{{ work_life_rating|lower }}">
+                Work-Life Balance Rating: {{ work_life_rating }}
+            </div>
+            {% endif %}
+
+            <div class="nav-links" style="margin-top: 1rem;">
+                <a href="/" class="nav-link">Go Back</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

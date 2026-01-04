@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Predictions</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>View All Predictions</h1>
+        </header>
+
+        <div class="card">
+            {% if predictions %}
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Prediction</th>
+                                <th>Most Influential Factors</th>
+                                <th>Suggestions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prediction in predictions %}
+                                <tr>
+                                    <td>{{ prediction.EmployeeID }}</td>
+                                    <td>{{ prediction.Name }}</td>
+                                    <td class="{% if 'Might Leave' in prediction.Prediction %}leave{% else %}stay{% endif %}">
+                                        {{ prediction.Prediction }}
+                                    </td>
+                                    <td>
+                                        <ul class="factors-list" style="background: transparent; padding: 0;">
+                                            {% for factor, importance in prediction.MostInfluentialFactors %}
+                                                <li style="background: transparent; padding: 0.25rem 0;">{{ factor }} ({{ "%.2f" | format(importance) }})</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <ul class="suggestions-list" style="background: transparent; padding: 0;">
+                                            {% for suggestion in prediction.Suggestions %}
+                                                <li style="background: transparent; padding: 0.25rem 0;">{{ suggestion }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No predictions available.</p>
+            {% endif %}
+
+            <div class="nav-links" style="margin-top: 1rem;">
+                <a href="/" class="nav-link">Go Back to Prediction Form</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

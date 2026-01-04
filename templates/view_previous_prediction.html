@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Previous Prediction | HR Analytics</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Employee Prediction History</h1>
+        </header>
+
+        <div class="glass-card" style="padding: 2rem;">
+            <form method="POST">
+                <div class="form-group floating-label-group">
+                    <input type="text" class="form-control" id="EmployeeID" name="EmployeeID" placeholder=" " required>
+                    <label class="floating-label">Enter Employee ID</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-search"></i> Search Prediction
+                </button>
+            </form>
+
+            <div class="nav-links" style="margin-top: 1.5rem;">
+                <a href="/view_all_predictions" class="nav-link">
+                    <i class="fas fa-list-ul"></i> View All Predictions
+                </a>
+                <a href="/" class="nav-link">
+                    <i class="fas fa-arrow-left"></i> Back to Prediction Form
+                </a>
+            </div>
+        </div>
+
+        {% if prediction %}
+        <div class="prediction-card">
+            <div class="prediction-text {% if 'Might Leave' in prediction.Prediction %}leave{% else %}stay{% endif %}">
+                <i class="fas fa-{% if 'Might Leave' in prediction.Prediction %}exclamation-triangle{% else %}check-circle{% endif %}"></i>
+                {{ prediction.Prediction }}
+            </div>
+
+            <div class="employee-details">
+                <p><strong>Employee ID:</strong> {{ prediction.EmployeeID }}</p>
+                <p><strong>Name:</strong> {{ prediction.Name }}</p>
+            </div>
+
+            <div class="suggestions-card">
+                <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                <ul class="suggestions-list">
+                    {% for suggestion in prediction.Suggestions %}
+                    <li>
+                        <span class="suggestion-icon"><i class="fas fa-arrow-right"></i></span>
+                        <span>{{ suggestion }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/download_report/{{ prediction.EmployeeID }}" class="btn btn-primary" download="employee_report_{{ prediction.EmployeeID }}.pdf">
+                    <i class="fas fa-file-pdf"></i> Download Full Report (PDF)
+                </a>
+            </div>
+        </div>
+        {% elif error %}
+        <div class="glass-card" style="color: var(--danger); text-align: center; padding: 1.5rem;">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
